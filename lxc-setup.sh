@@ -5,6 +5,8 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 # input
+# $username
+# $password
 if [ $# -lt 2 ]; then
     echo ""
     echo "Username: "
@@ -19,14 +21,14 @@ else
 fi
 echo -n "Server public key: "
 read -r serverPubKey
-echo -n "LXC id:"
+echo -n "LXC id: "
 read -r lxcid
 echo -n "Endpoint (IP:Port): "
 read -r endpoint
 
 # update/install packages
-apt update -y;
-apt upgrade -y;
+# apt update -y;
+# apt upgrade -y;
 apt install vim tmux wireguard git zsh -y;
 
 # add a new user
@@ -75,5 +77,5 @@ echo "Run the following on the server: "
 echo "echo \"
 [Peer]
 PublicKey = $publicKey
-AllowdIPs = 10.6.11.$lxcid/32; sudo systemctl restart wg-quick@wg0\" | sudo tee -a /etc/wireguard/wg0.conf"
+AllowedIPs = 10.6.11.$lxcid/32\" | sudo tee -a /etc/wireguard/wg0.conf; sudo systemctl restart wg-quick@wg0"
 echo "You can now login as $username."
