@@ -19,7 +19,7 @@ if [ $# -eq 2 ]; then
         cp .tmux/.tmux.conf.local .
         cp -a dotfiles/. .
         rm -rf dotfiles .git
-        rm .profile .bash* .zcomp* .wget* .shell*
+        rm .profile .bash* .wget* .shell*
         exit
     '
 else
