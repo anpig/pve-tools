@@ -27,7 +27,7 @@ read -r endpoint
 # update/install packages
 apt update -y;
 apt upgrade -y;
-apt install vim tmux wireguard git zsh -y;
+apt install vim tmux wireguard git zsh curl -y;
 
 # add a new user
 
@@ -38,7 +38,7 @@ echo "$username":"$password" | chpasswd;
 # setting zsh for the user
 su - "$username" -c '
     cd || exit
-    sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install-ohmyzsh.sh -O -)"
+    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
     git clone https://github.com/anpig/dotfiles.git
     git clone https://github.com/gpakosz/.tmux.git
