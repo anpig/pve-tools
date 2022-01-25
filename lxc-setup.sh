@@ -1,8 +1,29 @@
-#! /bin/sh
+#! /bin/bash
 if [ "$(whoami)" != "root" ]; then
     echo Please run with root privileges.
     exit 1
 fi
+
+# input
+if [ $# -lt 2 ]; then
+    echo ""
+    echo "Username: "
+    read -nr username
+    echo ""
+    echo "Password: "
+    read -nrs password
+    echo ""
+else
+    username=$1
+    password=$2
+fi
+echo ""
+echo "Server public key: "
+read -nr serverPubKey
+echo "LXC id:"
+read -nr lxcid
+echo "Endpoint (IP:Port): "
+read -nr endpoint
 
 # update/install packages
 apt update -y;
@@ -10,22 +31,9 @@ apt upgrade -y;
 apt install vim tmux wireguard git zsh -y;
 
 # add a new user
-useradd anpig -s /usr/bin/zsh -m;
 
-if [ $# -lt 2 ]; then
-    echo ""
-    echo "Username: "
-    read -r username
-    echo "Password: "
-    stty -echo
-    read -r password
-    stty echo
-    echo ""
-else
-    username=$1
-    password=$2
-fi
-
+useradd "$username" -s /usr/bin/zsh -m;
+usermod -aG sudo "$username"
 echo "$username":"$password" | chpasswd;
 
 # setting zsh for the user
@@ -49,13 +57,6 @@ cd /etc/wireguard/ || exit
 umask 077; wg genkey | tee privatekey | wg pubkey > publickey
 privateKey=$(cat privatekey)
 publicKey=$(cat publickey)
-echo ""
-echo "Server public key: "
-read -r serverPubKey
-echo "LXC id:"
-read -r lxcid
-echo "Endpoint: (IP:Port)"
-read -r endpoint
 {
     echo "[Interface]";
     echo "PrivateKey = $privateKey";
@@ -71,7 +72,7 @@ systemctl enable wg-quick@wg0
 systemctl start wg-quick@wg0
 systemctl status wg-quick@wg0
 echo ""
-echo "Run this on the server: "
+echo "Run the following on the server: "
 echo "echo \"
 [Peer]
 PublicKey = $publicKey
