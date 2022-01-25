@@ -11,7 +11,7 @@ if [ $# -eq 2 ]; then
     echo "$1":"$2" | chpasswd;
     su - "$1" -c '
         cd || exit
-        sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install_ohmyzsh.sh -O -)"
+        sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install-ohmyzsh.sh -O -)"
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
         git clone https://github.com/anpig/dotfiles.git
         git clone https://github.com/gpakosz/.tmux.git
@@ -19,7 +19,7 @@ if [ $# -eq 2 ]; then
         cp .tmux/.tmux.conf.local .
         cp -a dotfiles/. .
         rm -rf dotfiles .git
-        rm .profile .bash* .wget* .shell*
+        rm .profile .bash* .wget
         exit
     '
 else
