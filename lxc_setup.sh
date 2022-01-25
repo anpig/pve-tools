@@ -7,20 +7,16 @@ if [ $# -eq 2 ]; then
     apt update -y;
     apt upgrade -y;
     apt install vim tmux wireguard git zsh -y;
-    useradd anpig -m;
+    useradd anpig -s /usr/bin/zsh -m;
     echo "$1":"$2" | chpasswd;
     su - "$1" -c '
         cd || exit
         sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install_ohmyzsh.sh -O -)"
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
         git clone https://github.com/anpig/dotfiles.git
-        rm -rf dotfile/.git
         cp -a dotfiles/. .
-        rm -rf dotfiles
-        rm -rf .git
-        rm .profile
-        rm .bashrc
-        rm .bashprofile
+        rm -rf dotfiles .git
+        rm .profile .bash* .zcomp* .wget* .shell*
         exit
     '
 else
