@@ -14,6 +14,9 @@ if [ $# -eq 2 ]; then
         sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install_ohmyzsh.sh -O -)"
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
         git clone https://github.com/anpig/dotfiles.git
+        git clone https://github.com/gpakosz/.tmux.git
+        ln -s -f .tmux/.tmux.conf
+        cp .tmux/.tmux.conf.local .
         cp -a dotfiles/. .
         rm -rf dotfiles .git
         rm .profile .bash* .zcomp* .wget* .shell*
