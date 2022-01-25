@@ -6,7 +6,7 @@ fi
 if [ $# -eq 2 ]; then
     apt update -y;
     apt upgrade -y;
-    apt install vim tmux wireguard git -y;
+    apt install vim tmux wireguard git zsh -y;
     useradd anpig -m;
     echo "$1":"$2" | chpasswd;
     su - "$1" -c '
@@ -23,7 +23,6 @@ if [ $# -eq 2 ]; then
         rm .bashprofile
         exit
     '
-    apt install zsh -y
 else
     echo Usage: ./lxc_setup username password
     exit 1
