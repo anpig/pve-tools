@@ -8,22 +8,21 @@ fi
 if [ $# -lt 2 ]; then
     echo ""
     echo "Username: "
-    read -nr username
+    read -r username
     echo ""
     echo "Password: "
-    read -nrs password
+    read -rs password
     echo ""
 else
     username=$1
     password=$2
 fi
-echo ""
-echo "Server public key: "
-read -nr serverPubKey
-echo "LXC id:"
-read -nr lxcid
-echo "Endpoint (IP:Port): "
-read -nr endpoint
+echo -n "Server public key: "
+read -r serverPubKey
+echo -n "LXC id:"
+read -r lxcid
+echo -n "Endpoint (IP:Port): "
+read -r endpoint
 
 # update/install packages
 apt update -y;
