@@ -11,7 +11,7 @@ if [ $# -eq 2 ]; then
     echo "$1":"$2" | chpasswd;
     su - "$1" -c '
         cd || exit
-        sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+        sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install_ohmyzsh.sh -O -)"
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
         git clone https://github.com/anpig/dotfiles.git
         rm -rf dotfile/.git
@@ -20,7 +20,7 @@ if [ $# -eq 2 ]; then
         rm -rf .git
         rm .profile
         rm .bashrc
-        rm .bash_profile
+        rm .bashprofile
         exit
     '
     apt install zsh -y
