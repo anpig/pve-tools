@@ -67,10 +67,13 @@ read -r endpoint
     echo "Endpoint = $endpoint";
     echo "PersistentKeepalive = 15";
 } >> /etc/wireguard/wg0.conf
-echo "Run this on the server: "
-echo "sudo echo [Peer]
-PublicKey = $publicKey
-AllowdIPs = 10.6.11.$lxcid/32; sudo systemctl restart wg-quick@wg0"
 systemctl enable wg-quick@wg0
 systemctl start wg-quick@wg0
 systemctl status wg-quick@wg0
+echo ""
+echo "Run this on the server: "
+echo "echo \"
+[Peer]
+PublicKey = $publicKey
+AllowdIPs = 10.6.11.$lxcid/32; sudo systemctl restart wg-quick@wg0\" | sudo tee -a /etc/wireguard/wg0.conf"
+echo "You can now login as $username."
