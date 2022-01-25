@@ -5,14 +5,12 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 # input
-# $username
-# $password
 if [ $# -lt 2 ]; then
     echo ""
-    echo "Username: "
+    echo -n "Username: "
     read -r username
     echo ""
-    echo "Password: "
+    echo -n "Password: "
     read -rs password
     echo ""
 else
@@ -38,10 +36,10 @@ usermod -aG sudo "$username"
 echo "$username":"$password" | chpasswd;
 
 # setting zsh for the user
-su - "$username" -c "
+su - "$username" -c '
     cd || exit
-    sh -c \"$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install-ohmyzsh.sh -O -)\"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}\"/themes/powerlevel10k
+    sh -c "$(wget https://raw.githubusercontent.com/anpig/pve-tools/main/install-ohmyzsh.sh -O -)"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"/themes/powerlevel10k
     git clone https://github.com/anpig/dotfiles.git
     git clone https://github.com/gpakosz/.tmux.git
     ln -s -f .tmux/.tmux.conf
@@ -50,7 +48,7 @@ su - "$username" -c "
     rm -rf dotfiles .git
     rm .profile .bash* .wget* .zcomp* 2> /dev/null
     exit
-"
+'
 
 # setting up wireguard
 sh -c 'umask 077; touch /etc/wireguard/wg0.conf'
@@ -72,10 +70,12 @@ publicKey=$(cat publickey)
 systemctl enable wg-quick@wg0
 systemctl start wg-quick@wg0
 systemctl status wg-quick@wg0
-echo ""
+echo "*********************************"
 echo "Run the following on the server: "
 echo "echo \"
 [Peer]
 PublicKey = $publicKey
-AllowedIPs = 10.6.11.$lxcid/32\" | sudo tee -a /etc/wireguard/wg0.conf; sudo systemctl restart wg-quick@wg0"
+AllowedIPs = 10.6.11.$lxcid/32\" | sudo tee -a /etc/wireguard/wg0.conf
+sudo systemctl restart wg-quick@wg0"
+echo "*********************************"
 echo "You can now login as $username."
