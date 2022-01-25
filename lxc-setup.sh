@@ -25,8 +25,8 @@ echo -n "Endpoint (IP:Port): "
 read -r endpoint
 
 # update/install packages
-# apt update -y;
-# apt upgrade -y;
+apt update -y;
+apt upgrade -y;
 apt install vim tmux wireguard git zsh -y;
 
 # add a new user
@@ -70,12 +70,13 @@ publicKey=$(cat publickey)
 systemctl enable wg-quick@wg0
 systemctl start wg-quick@wg0
 systemctl status wg-quick@wg0
-echo "*********************************"
+echo "**************************************"
 echo "Run the following on the server: "
 echo "echo \"
 [Peer]
 PublicKey = $publicKey
-AllowedIPs = 10.6.11.$lxcid/32\" | sudo tee -a /etc/wireguard/wg0.conf
+AllowedIPs = 10.6.11.$lxcid/32\"
+| sudo tee -a /etc/wireguard/wg0.conf
 sudo systemctl restart wg-quick@wg0"
-echo "*********************************"
+echo "**************************************"
 echo "You can now login as $username."
